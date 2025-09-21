@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE muclient>
+<muclient>
+    <plugin
+        name="Aardwolf_Forge"
+        author="deathr"
+        id="25ae87ba92fd591442145e42"
+        language="Lua"
+        purpose="Automatically convert weapons to hammers with hammerforge or back to original form with reforge"
+        date_written="2025-09-21 09:49:32"
+        save_state="y"
+        requires="5.07"
+        version="0.1">
+    </plugin>
+
+<!--
+https://github.com/AardPlugins/Aardwolf-Forge
+-->
+
+    <script>
+<![CDATA[
+dofile(GetPluginInfo(GetPluginID(), 20) .. "Aardwolf_Forge.lua")
+]]>
+    </script>
+
+    <timers>
+        <timer
+            name="timer_init_plugin"
+            second="0.5"
+            active_closed="y"
+            script="init_plugin"
+            enabled="y"
+            send_to="12"></timer>
+    </timers>
+
+    <aliases>
+        <alias
+            match="^hforge convert$"
+            script="alias_hforge_convert"
+            enabled="y"
+            regexp="y"
+            sequence="100"
+            ignore_case="y"
+            send_to="12"></alias>
+
+        <alias
+            match="^hforge revert$"
+            script="alias_hforge_revert"
+            enabled="y"
+            regexp="y"
+            sequence="100"
+            ignore_case="y"
+            send_to="12"></alias>
+
+        <alias
+            match="^hforge status(?: (?<filter>hammer|nothammer))?$"
+            script="alias_hforge_status"
+            enabled="y"
+            regexp="y"
+            sequence="100"
+            ignore_case="y"
+            send_to="12"></alias>
+
+        <alias
+            match="^hforge abort$"
+            script="alias_hforge_abort"
+            enabled="y"
+            regexp="y"
+            sequence="100"
+            ignore_case="y"
+            send_to="12"></alias>
+
+        <alias
+            match="^hforge help$"
+            script="alias_hforge_help"
+            enabled="y"
+            regexp="y"
+            sequence="100"
+            ignore_case="y"
+            send_to="12"></alias>
+
+        <!-- Update Aliases -->
+        <alias enabled="y"
+            regexp="y"
+            match="^hforge update$"
+            script="alias_update_plugin"
+            sequence="100"
+            send_to="12"></alias>
+
+        <alias enabled="y"
+            regexp="y"
+            match="^hforge force update(?: (?<branch>\S+))?$"
+            script="alias_force_update_plugin"
+            sequence="100"
+            send_to="12"></alias>
+
+        <alias enabled="y"
+            regexp="y"
+            match="^hforge reload$"
+            script="alias_reload_plugin"
+            sequence="100"
+            send_to="12"></alias>
+    </aliases>
+
+    <triggers>
+        <!-- Success triggers -->
+        <trigger
+            match="^You heat .* in the forge\.$"
+            script="trigger_forge_start"
+            ignore_case="n"
+            enabled="y"
+            regexp="y"
+            sequence="100"
+            keep_evaluating="y"></trigger>
+
+        <trigger
+            match="^As the .* cools, you deftly (?:shape it into a hammer|reforge it into a .*)\.$"
+            script="trigger_forge_success"
+            ignore_case="n"
+            enabled="y"
+            regexp="y"
+            sequence="100"
+            keep_evaluating="y"></trigger>
+
+        <!-- Failure triggers -->
+        <trigger
+            match="^.* is already a hammer\.$"
+            script="trigger_already_hammer"
+            ignore_case="n"
+            enabled="y"
+            regexp="y"
+            sequence="100"
+            keep_evaluating="y"></trigger>
+
+        <trigger
+            match="^.* is not a hammer\.$"
+            script="trigger_not_hammer"
+            ignore_case="n"
+            enabled="y"
+            regexp="y"
+            sequence="100"
+            keep_evaluating="y"></trigger>
+
+        <trigger
+            match="^You can only hammerforge metal based weapons\.$"
+            script="trigger_not_metal"
+            ignore_case="n"
+            enabled="y"
+            regexp="y"
+            sequence="100"
+            keep_evaluating="y"></trigger>
+
+        <trigger
+            match="^You must be at least level \d+ to reforge .*\.$"
+            script="trigger_level_too_low"
+            ignore_case="n"
+            enabled="y"
+            regexp="y"
+            sequence="100"
+            keep_evaluating="y"></trigger>
+
+        <trigger
+            match="^You must be at least level \d+ to hammerforge .*\.$"
+            script="trigger_level_too_low"
+            ignore_case="n"
+            enabled="y"
+            regexp="y"
+            sequence="100"
+            keep_evaluating="y"></trigger>
+
+        <!-- Fatal error trigger -->
+        <trigger
+            match="^You must be at a forge to use this ability\.$"
+            script="trigger_not_at_forge"
+            ignore_case="n"
+            enabled="y"
+            regexp="y"
+            sequence="100"
+            keep_evaluating="y"></trigger>
+    </triggers>
+
+</muclient>
